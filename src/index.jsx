@@ -1,42 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MyComponent from './components/MyComponent';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import App from './App';
+import './index.css';
 
-class App extends React.Component {
-    
-    constructor(props) {
-        super(props);
-        this.state = {
-            mensagem:'Olá'
-        }
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(e){
-        console.log(e);
-        //console.log(e.target);
-        this.setState({
-            mensagem:'Clicou'
-        });
-    }
-
-    componentWillMount(){
-        return true;
-    }
-
-    render(){
-        return (
-            <div>
-                <h2>{this.state.mensagem}</h2>
-                <MyComponent mensagem={this.state.mensagem} />
-                <button onClick={ this.handleClick }>Click me!</button>
-            </div>
-        )
-    }
-
-}
+import * as reducers from './store/reducers';
+const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
 
 ReactDOM.render(
-    <App />,
-    document.querySelector('#app')
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('app')
 )

@@ -4,7 +4,8 @@ import Immutable from 'seamless-immutable';
 
 const initialState = Immutable({
     topicsByUrl: undefined,
-    selectedTopicUrls: []
+    selectedTopicUrls: [],
+    selectionFinalized: false
 });
 
 export default function reduce(state = initialState, action = {}) {
@@ -17,6 +18,10 @@ export default function reduce(state = initialState, action = {}) {
             return state.merge({
                 selectedTopicUrls: action.selectedTopicUrls
             });
+        case types.TOPIC_SELECTION_FINALIZED:
+            return state.merge({
+                selectionFinalized:true
+            })
         default:
             return state;
     }
@@ -40,4 +45,8 @@ export function getSelectedTopicUrlsMap(state){
 
 export function isTopicSelectionValid(state){
     return state.topics.selectedTopicUrls.length === 3;
+}
+
+export function isTopicSelectionFinalized(state){
+    return state.topics.selectionFinalized;
 }

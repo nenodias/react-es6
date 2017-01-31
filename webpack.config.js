@@ -24,12 +24,20 @@ module.exports = {
                 test: /\.css$/,
                 loader: "style-loader!css-loader",
                 exclude: /node_modules/
+            },
+            {
+                test: /\.png$/,
+                use: { loader: 'url-loader', options: { limit: 100000 } },
+            },
+            {
+                test: /\.jpg$/,
+                use: [ 'file-loader' ]
             }
         ]
     },
     output: {
         filename: 'bundle.js',
-        output: __dirname
+        output: __dirname,
     },
     resolve:{ extensions: [ '','.js', '.jsx'] }
 }

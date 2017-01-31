@@ -14,7 +14,7 @@ export default class ListView extends React.Component {
     renderRowsById(rowId){
         return (
             <li key={rowId}>
-                {this.props.renderRow( _.get(this.props.rowsById, rowId) )}
+                {this.props.renderRow( rowId, _.get(this.props.rowsById, rowId) )}
             </li>
             );
     }

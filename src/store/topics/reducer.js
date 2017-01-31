@@ -13,6 +13,10 @@ export default function reduce(state = initialState, action = {}) {
             return state.merge({
                 topicsByUrl:action.topicsByUrl
             });
+        case types.TOPIC_SELECTED:
+            return state.merge({
+                selectedTopicUrls: action.selectedTopicUrls
+            });
         default:
             return state;
     }
@@ -24,4 +28,12 @@ export function getTopicsByUrl(state){
 
 export function getTopicsUrlArray(state){
     return _.keys(state.topics.topicsByUrl);
+}
+
+export function getSelectedTopicUrls(state){
+    return state.topics.selectedTopicUrls;
+}
+
+export function getSelectedTopicUrlsMap(state){
+    return _.keyBy(state.topics.selectedTopicUrls);
 }

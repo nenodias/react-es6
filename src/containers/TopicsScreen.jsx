@@ -40,7 +40,7 @@ class TopicsScreen extends Component {
     }
 
     renderRow(rowId, row){
-        const selected = this.props.selectedIdsMap[rowId];
+        const selected = this.props.selectedRowsById[rowId];
         return (
             <ListRow
                 rowId={rowId}
@@ -64,10 +64,11 @@ class TopicsScreen extends Component {
 
 // which props do we want to inject, given the global store state?
 function mapStateToProps(state) {
+    const [topicsByUrl, topicsUrlArray] = topicsSelectors.getTopics(state);
     return {
-        rowsById: topicsSelectors.getTopicsByUrl(state),
-        rowsIdArray: topicsSelectors.getTopicsUrlArray(state),
-        selectedIdsMap: topicsSelectors.getSelectedTopicUrlsMap(state),
+        rowsById: topicsByUrl,
+        rowsIdArray: topicsUrlArray,
+        selectedRowsById: topicsSelectors.getSelectedTopicsByUrl(state),
         canFinalizeSelection: topicsSelectors.isTopicSelectionValid(state)
     };
 }

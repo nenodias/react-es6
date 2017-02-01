@@ -11,6 +11,7 @@ import * as postsSelectors from '../store/posts/reducer';
 import ListView from '../components/ListView';
 import ListRow from '../components/ListRow';
 import TopicsFilter from '../components/TopicsFilter';
+import PostView from '../components/PostView';
 
 class PostsScreen extends Component{
 
@@ -24,17 +25,22 @@ class PostsScreen extends Component{
         }
         return (
             <div className="PostsScreen">
-                <TopicsFilter
-                    className="TopicsFilter"
-                    topics={this.props.topicsByUrl}
-                    selected={this.props.currentFilter}
-                    onChanged={this.onFilterChanged.bind(this)}
-                />
-                <ListView 
-                    rowsIdArray={this.props.rowsIdArray}
-                    rowsById={this.props.rowsById}
-                    renderRow={this.renderRow.bind(this)}
-                />
+                <div className="LeftPane">
+                    <TopicsFilter
+                        className="TopicsFilter"
+                        topics={this.props.topicsByUrl}
+                        selected={this.props.currentFilter}
+                        onChanged={this.onFilterChanged.bind(this)}
+                    />
+                    <ListView 
+                        rowsIdArray={this.props.rowsIdArray}
+                        rowsById={this.props.rowsById}
+                        renderRow={this.renderRow.bind(this)}
+                    />
+                </div>
+                <div className="ContentPane">
+                    <PostView post={this.props.currentPost} />
+                </div>
             </div>
             );
     }
@@ -47,7 +53,7 @@ class PostsScreen extends Component{
 
     renderRow(rowId, row){
         return (
-            <ListRow rowId={rowId}>
+            <ListRow rowId={rowId} onClick={this.onRowClicked.bind(this)}>
                 {!row.thumbnail ? false:
                     <img className="thumbnail" src={row.thumbnail} />
                 }
@@ -60,6 +66,10 @@ class PostsScreen extends Component{
         this.props.dispatch(postsActions.changeFilter(newFilter));
     }
 
+    onRowClicked(rowId){
+        this.props.dispatch(postsActions.selectPost(rowId));
+    }
+
 }
 
 function mapStateToProps(state){
@@ -68,7 +78,8 @@ function mapStateToProps(state){
         rowsById:postsById,
         rowsIdArray:postsIdArray,
         topicsByUrl:topicsSelectors.getSelectedTopicsByUrl(state),
-        currentFilter:postsSelectors.getCurrentFilter(state)
+        currentFilter:postsSelectors.getCurrentFilter(state),
+        currentPost:postsSelectors.getCurrentPost(state)
     };
 }
 

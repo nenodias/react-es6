@@ -45,8 +45,10 @@ export default class PostView extends Component{
     }
 
     _getBodyMarkup(body){
+        let txt = document.createElement("textarea");
+        txt.innerHTML = body;
         return {
-            __html: body.replace(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec)).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+            __html: txt.value
         };
     }
 
